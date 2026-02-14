@@ -1,16 +1,39 @@
-<!-- <script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { supabase } from './lib/supabaseClient'
+import { supabase } from '../utils/supabase'
+import type { Tables } from '../database.types.ts'
 
-const instruments = ref([])
+const instruments = ref<Tables<'instruments'>[]>([])
 
 async function getInstruments() {
-  const { data } = await supabase.from('instruments').select()
-  instruments.value = data
+  const { data, error } = await supabase.from('instruments').select('id,name')
+  if (error) {
+    console.error('Error fetching instruments:', error)
+  } else {
+    instruments.value = data
+  }
+}
+
+async function checkConnection() {
+  try {
+    const { data, error } = await supabase.from('instruments').select('id')
+
+    if (error) {
+      console.error('❌ Connection Failed:', error.message)
+      // Common errors:
+      // "401 Unauthorized" = Wrong API Key
+      // "PGRST301" = URL is wrong or table name typo
+    } else {
+      console.log('✅ Connection Successful! Data received:', data)
+    }
+  } catch (err) {
+    console.error('💥 Unexpected Error:', err)
+  }
 }
 
 onMounted(() => {
   getInstruments()
+  checkConnection()
 })
 </script>
 
@@ -18,8 +41,8 @@ onMounted(() => {
   <ul>
     <li v-for="instrument in instruments" :key="instrument.id">{{ instrument.name }}</li>
   </ul>
-</template> -->
-
+</template>
+<!-- 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
@@ -104,4 +127,4 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
-</style>
+</style> -->
