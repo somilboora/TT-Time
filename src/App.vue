@@ -1,9 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { supabase } from '../utils/supabase'
+import type { User } from '@supabase/supabase-js'
 import type { Tables } from '../database.types.ts'
+import NavBar from '@/components/NavBar.vue'
 
 const instruments = ref<Tables<'instruments'>[]>([])
+const user = ref<User | null>(null)
+
+function setupAuthListener() {
+  supabase.auth.onAuthStateChange((event, session) => {
+    user.value = session?.user ?? null
+    console.log('Auth event:', event)
+  })
+}
 
 async function getInstruments() {
   const { data, error } = await supabase.from('instruments').select('id,name')
@@ -34,14 +44,23 @@ async function checkConnection() {
 onMounted(() => {
   getInstruments()
   checkConnection()
+  setupAuthListener()
 })
 </script>
 
 <template>
-  <ul>
-    <li v-for="instrument in instruments" :key="instrument.id">{{ instrument.name }}</li>
-  </ul>
+  <div class="w-full min-h-screen bg-background text-foreground">
+    <NavBar :user="user" />
+    <main>
+      <router-view />
+    </main>
+  </div>
 </template>
+
+<!-- <ul>
+        <li v-for="instrument in instruments" :key="instrument.id">{{ instrument.name }}</li>
+      </ul> -->
+
 <!-- 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
