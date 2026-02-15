@@ -10,17 +10,17 @@ import { useRouter } from 'vue-router'
 import { Route } from 'lucide-vue-next'
 
 const router = useRouter()
-const email = ref('')
-const password = ref('')
 const loading = ref(false)
 
 async function handleSignup() {
   loading.value = true
+  const emailVal = email.value
+  const passwordVal = password.value
 
   // 1. Send the request to Supabase Auth
   const { data, error } = await supabase.auth.signUp({
-    email: email.value,
-    password: password.value,
+    email: emailVal,
+    password: passwordVal,
   })
 
   if (error) {
@@ -29,8 +29,21 @@ async function handleSignup() {
     loading.value = false
   } else {
     // 3. Success! By default, Supabase sends a confirmation email
-    alert('Success! Check your email for the confirmation link.')
-    router.push({ name: 'login' })
+    alert('Success! No email verification required.')
+    router.push({ name: 'leaderboard' })
+  }
+
+  // 2. Create the Public Profile
+  if (data.user) {
+    const { error: profileError } = await supabase.from('profiles').insert({
+      id: data.user.id, // Link to the Auth ID
+      username: username.value,
+      elo_rating: 1000, // Starting Elo
+      win_streak: 0,
+    })
+
+    if (profileError) alert(profileError.message)
+    else alert('New User Created, enjoy the game!')
   }
 }
 </script>
@@ -46,7 +59,7 @@ async function handleSignup() {
         <FieldGroup>
           <Field>
             <FieldLabel for="name"> Full Name </FieldLabel>
-            <Input id="name" type="text" placeholder="John Doe" required />
+            <Input id="username" type="text" placeholder="John Doe" required />
           </Field>
           <Field>
             <FieldLabel for="email"> Email </FieldLabel>
@@ -60,15 +73,11 @@ async function handleSignup() {
             <Input id="password" type="password" required />
             <FieldDescription>Must be at least 8 characters long.</FieldDescription>
           </Field>
-          <Field>
-            <FieldLabel for="confirm-password"> Confirm Password </FieldLabel>
-            <Input id="confirm-password" type="password" required />
-            <FieldDescription>Please confirm your password.</FieldDescription>
-          </Field>
           <FieldGroup>
             <Field>
-              <Button type="submit"> Create Account </Button>
-              <Button variant="outline" type="button"> Sign up with Google </Button>
+              <Button type="submit" :disabled="loading" @click.prevent="handleSignup">
+                {{ loading ? 'Creating Account...' : 'Create Account' }}
+              </Button>
               <FieldDescription class="px-6 text-center">
                 Already have an account? <RouterLink to="/login">Sign in</RouterLink>
               </FieldDescription>

@@ -6,21 +6,32 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { supabase } from '../../../../../../utils/supabase'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
+const loading = ref(false)
+const router = useRouter()
+
 async function onSubmit(values: any) {
+  const emailVal = email.value
+  const passwordVal = password.value
+
   const { error } = await supabase.auth.signInWithPassword({
-    email: values.email,
-    password: values.password,
+    email: emailVal,
+    password: passwordVal,
   })
 
   if (error) {
-    // Handle error (e.g., show a toast)
+    alert(error.message)
+    loading.value = false
+    return
   } else {
-    // Success! The global listener in App.vue will handle the rest
+    alert('Login successful!')
+    router.push('/leaderboard')
   }
 }
 </script>
@@ -49,8 +60,9 @@ async function onSubmit(values: any) {
               <Input id="password" type="password" required />
             </Field>
             <Field>
-              <Button type="submit"> Login </Button>
-              <Button variant="outline" type="button"> Login with Google </Button>
+              <Button type="submit" :disabled="loading" @click.prevent="onSubmit">{{
+                loading ? 'Logging in...' : 'Login'
+              }}</Button>
               <FieldDescription class="text-center">
                 Don't have an account?
                 <RouterLink to="/signup" class="text-blue-500 hover:underline">

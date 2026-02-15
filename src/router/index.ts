@@ -4,6 +4,7 @@ import Signup from '../views/Signup.vue'
 import Leaderboard from '@/views/Leaderboard.vue'
 import AddMatch from '@/views/AddMatch.vue'
 import MatchHistory from '@/views/MatchHistory.vue'
+import { supabase } from '../../utils/supabase'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,7 +23,7 @@ const router = createRouter({
       path: '/add-match',
       name: 'add-match',
       component: AddMatch,
-      //meta: { requiresAuth: true },
+      meta: { requiresAuth: true },
     },
     {
       path: '/login',
@@ -40,6 +41,20 @@ const router = createRouter({
       component: Signup,
     },
   ],
+})
+
+router.beforeEach(async (to, from, next) => {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  // Check if the route requires auth
+  if (to.path === '/add-match' && !session) {
+    // Redirect to login if not authenticated
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router

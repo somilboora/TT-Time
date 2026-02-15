@@ -57,8 +57,7 @@ async function handleLogout() {
               </NavigationMenuLink>
             </NavigationMenuItem>
 
-            <!-- <NavigationMenuItem v-if="user"> -->
-            <NavigationMenuItem>
+            <NavigationMenuItem v-if="user">
               <NavigationMenuLink :class="navigationMenuTriggerStyle()" as-child>
                 <router-link :to="{ name: 'add-match' }">Add Match</router-link>
               </NavigationMenuLink>
