@@ -51,7 +51,14 @@ async function handleLogout() {
               </NavigationMenuLink>
             </NavigationMenuItem>
 
-            <NavigationMenuItem v-if="user">
+            <NavigationMenuItem>
+              <NavigationMenuLink :class="navigationMenuTriggerStyle()" as-child>
+                <router-link :to="{ name: 'match-history' }">Match History</router-link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            <!-- <NavigationMenuItem v-if="user"> -->
+            <NavigationMenuItem>
               <NavigationMenuLink :class="navigationMenuTriggerStyle()" as-child>
                 <router-link :to="{ name: 'add-match' }">Add Match</router-link>
               </NavigationMenuLink>

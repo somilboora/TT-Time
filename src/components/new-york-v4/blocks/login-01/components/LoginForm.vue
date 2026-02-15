@@ -53,7 +53,9 @@ async function onSubmit(values: any) {
               <Button variant="outline" type="button"> Login with Google </Button>
               <FieldDescription class="text-center">
                 Don't have an account?
-                <a href="#"> Sign up </a>
+                <RouterLink to="/signup" class="text-blue-500 hover:underline">
+                  Sign up
+                </RouterLink>
               </FieldDescription>
             </Field>
           </FieldGroup>
