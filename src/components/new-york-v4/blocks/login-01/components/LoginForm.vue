@@ -15,14 +15,15 @@ const props = defineProps<{
 
 const loading = ref(false)
 const router = useRouter()
+const email = ref('')
+const password = ref('')
 
 async function onSubmit(values: any) {
-  const emailVal = email.value
-  const passwordVal = password.value
+  loading.value = true
 
   const { error } = await supabase.auth.signInWithPassword({
-    email: emailVal,
-    password: passwordVal,
+    email: email.value,
+    password: password.value,
   })
 
   if (error) {
@@ -48,16 +49,16 @@ async function onSubmit(values: any) {
           <FieldGroup>
             <Field>
               <FieldLabel for="email"> Email </FieldLabel>
-              <Input id="email" type="email" placeholder="m@example.com" required />
+              <Input v-model="email" type="email" placeholder="m@example.com" required />
             </Field>
             <Field>
               <div class="flex items-center">
                 <FieldLabel for="password"> Password </FieldLabel>
-                <a href="#" class="ml-auto inline-block text-sm underline-offset-4 hover:underline">
-                  Forgot your password?
-                </a>
               </div>
-              <Input id="password" type="password" required />
+              <Input v-model="password" type="password" required />
+              <a href="#" class="ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                Forgot your password?
+              </a>
             </Field>
             <Field>
               <Button type="submit" :disabled="loading" @click.prevent="onSubmit">{{

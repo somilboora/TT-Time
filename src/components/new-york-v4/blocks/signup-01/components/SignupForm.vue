@@ -7,10 +7,12 @@ import { Input } from '@/components/ui/input'
 import supabase from '../../../../../../utils/supabase'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { Route } from 'lucide-vue-next'
 
 const router = useRouter()
 const loading = ref(false)
+const email = ref('')
+const password = ref('')
+const username = ref('')
 
 async function handleSignup() {
   loading.value = true
@@ -40,7 +42,7 @@ async function handleSignup() {
       username: username.value,
       elo_rating: 1000, // Starting Elo
       win_streak: 0,
-    })
+    } as any)
 
     if (profileError) alert(profileError.message)
     else alert('New User Created, enjoy the game!')
@@ -59,18 +61,18 @@ async function handleSignup() {
         <FieldGroup>
           <Field>
             <FieldLabel for="name"> Full Name </FieldLabel>
-            <Input id="username" type="text" placeholder="John Doe" required />
+            <Input v-model="username" type="text" placeholder="John Doe" required />
           </Field>
           <Field>
             <FieldLabel for="email"> Email </FieldLabel>
-            <Input id="email" type="email" placeholder="m@example.com" required />
+            <Input v-model="email" id="email" type="email" placeholder="m@example.com" required />
             <FieldDescription>
               We'll use this to contact you. We will not share your email with anyone else.
             </FieldDescription>
           </Field>
           <Field>
             <FieldLabel for="password"> Password </FieldLabel>
-            <Input id="password" type="password" required />
+            <Input v-model="password" id="password" type="password" required />
             <FieldDescription>Must be at least 8 characters long.</FieldDescription>
           </Field>
           <FieldGroup>
