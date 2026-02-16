@@ -17,7 +17,7 @@ onMounted(async () => {
   const { data } = await supabase
     .from('matches')
     .select(
-      'id, created_at, winner_score, loser_score, is_doubles, winner_id1:profiles!winner_id1(username), loser_id1:profiles!loser_id1(username), winner_id2:profiles!winner_id2(username), loser_id2:profiles!loser_id2(username)',
+      'unique_id, created_at, winner_score, loser_score, is_doubles, winner_id1:profiles!winner_id1(username), loser_id1:profiles!loser_id1(username), winner_id2:profiles!winner_id2(username), loser_id2:profiles!loser_id2(username)',
     )
     .order('created_at', { ascending: false })
   matches.value = data ?? []
