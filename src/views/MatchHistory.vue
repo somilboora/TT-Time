@@ -33,10 +33,10 @@ onMounted(async () => {
         <TableHeader>
           <TableRow class="bg-muted">
             <TableHead class="w-1/11">Date</TableHead>
-            <TableHead class="w-2/11">Player A_1</TableHead>
-            <TableHead class="w-2/11">Player B_1</TableHead>
-            <TableHead class="w-2/11">Player A_2</TableHead>
-            <TableHead class="w-2/11">Player B_2</TableHead>
+            <TableHead class="w-2/11">Winner 1</TableHead>
+            <TableHead class="w-2/11">Winner 2</TableHead>
+            <TableHead class="w-2/11">Loser 1</TableHead>
+            <TableHead class="w-2/11">Loser 2</TableHead>
             <TableHead class="w-1/11">Win Score</TableHead>
             <TableHead class="w-1/11">Loser Score</TableHead>
           </TableRow>
@@ -45,8 +45,8 @@ onMounted(async () => {
           <TableRow v-for="match in matches" :key="match.id">
             <TableCell>{{ new Date(match.created_at).toLocaleDateString() }}</TableCell>
             <TableCell>{{ match.winner_id1.username }}</TableCell>
-            <TableCell>{{ match.loser_id1.username }}</TableCell>
             <TableCell>{{ match.winner_id2?.username }}</TableCell>
+            <TableCell>{{ match.loser_id1.username }}</TableCell>
             <TableCell>{{ match.loser_id2?.username }}</TableCell>
             <TableCell class="font-medium">{{ match.winner_score }}</TableCell>
             <TableCell class="text-right">{{ match.loser_score }}</TableCell>
