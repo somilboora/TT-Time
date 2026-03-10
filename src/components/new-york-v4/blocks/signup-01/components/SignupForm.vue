@@ -40,7 +40,7 @@ async function handleSignup() {
     const { error: profileError } = await supabase.from('profiles').insert({
       id: data.user.id, // Link to the Auth ID
       username: username.value,
-      elo_rating: 1000, // Starting Elo
+      elo_rating: 850, // Starting Elo
       win_streak: 0,
     } as any)
 
