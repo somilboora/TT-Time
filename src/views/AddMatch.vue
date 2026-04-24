@@ -26,7 +26,18 @@ onMounted(async () => {
     .select('*')
     .order('username', { ascending: true })
 
-  if (data) profiles.value = data
+  let fakeData = data ?? []
+  if (fakeData.length === 0) {
+    fakeData = [
+      { id: '1', username: 'Ethan C' },
+      { id: '2', username: 'Joseph Zola' },
+      { id: '3', username: 'Alex Minuzzo' },
+      { id: '4', username: 'Arpy (Supreme) Mukhopadhyay' },
+      { id: '7', username: 'B Cran' },
+    ] as any
+  }
+
+  if (fakeData) profiles.value = fakeData
 })
 
 async function submitMatch() {
@@ -95,18 +106,18 @@ async function submitMatch() {
 </script>
 <template>
   <div class="flex w-full items-center justify-center py-10">
-    <Card>
+    <Card class="w-full max-w-lg rounded-3xl shadow-sm border border-border/40 bg-background/95">
       <CardHeader>
         <CardTitle>Record a Match</CardTitle>
       </CardHeader>
       <CardContent class="space-y-4">
-        <div class="flex items-center space-x-2 pb-4">
-          <input type="checkbox" id="doubles" v-model="isDoubles" class="w-4 h-4" />
-          <label for="doubles" class="text-sm font-medium">Doubles Match</label>
+        <div class="flex items-center gap-2 pb-4">
+          <input type="checkbox" id="doubles" v-model="isDoubles" class="w-4 h-4 cursor-pointer" />
+          <label for="doubles" class="text-sm font-medium cursor-pointer">Doubles Match</label>
         </div>
 
         <div class="grid grid-cols-2 gap-10">
-          <div class="flex flex-col space-y-4">
+          <div class="flex flex-col gap-1">
             <label class="text-sm font-medium text-green-600">Winner(s)</label>
             <select
               v-model="winner_id1"
@@ -125,10 +136,10 @@ async function submitMatch() {
               <option v-for="p in profiles" :key="p.id" :value="p.id">{{ p.username }}</option>
             </select>
 
-            <Input v-model="winnerScore" type="number" placeholder="Winner Score" />
+            <Input v-model="winnerScore" type="number" placeholder="Winner Score" class="mt-2" />
           </div>
 
-          <div class="flex flex-col space-y-4">
+          <div class="flex flex-col gap-1">
             <label class="text-sm font-medium text-red-600">Loser(s)</label>
             <select
               v-model="loser_id1"
@@ -147,12 +158,12 @@ async function submitMatch() {
               <option v-for="p in profiles" :key="p.id" :value="p.id">{{ p.username }}</option>
             </select>
 
-            <Input v-model="loserScore" type="number" placeholder="Loser Score" />
+            <Input v-model="loserScore" type="number" placeholder="Loser Score" class="mt-2" />
           </div>
         </div>
 
         <div class="pt-10">
-          <Button class="w-full" :disabled="loading" @click="submitMatch">
+          <Button class="w-full rounded-full shadow-sm font-semibold cursor-pointer !bg-black !text-white hover:!bg-white hover:!text-green-500 hover:ring-4 hover:ring-muted/50 transition-all duration-300 border border-transparent" :disabled="loading" @click="submitMatch">
             {{ loading ? 'Saving...' : 'Submit Match' }}
           </Button>
         </div>
