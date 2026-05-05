@@ -29,17 +29,10 @@ onMounted(async () => {
     )
     .order('created_at', { ascending: false })
   
-  let mData = data ?? []
-  if (mData.length === 0) {
-    mData = [
-      { id: 1, created_at: new Date().toISOString(), is_doubles: false, winner_id1: { username: 'B Cran' }, loser_id1: { username: 'Ethan C' }, winner_id2: null, loser_id2: null, winner_score: 21, loser_score: 18 },
-      { id: 2, created_at: new Date(Date.now() - 86400000).toISOString(), is_doubles: false, winner_id1: { username: 'Arpy (Supreme) Mukhopadhyay' }, loser_id1: { username: 'Joseph Zola' }, winner_id2: null, loser_id2: null, winner_score: 21, loser_score: 14 },
-      { id: 3, created_at: new Date(Date.now() - 186400000).toISOString(), is_doubles: true, winner_id1: { username: 'William Moore' }, winner_id2: { username: 'Alex Minuzzo' }, loser_id1: { username: 'Ethan C' }, loser_id2: { username: 'Joseph Zola' }, winner_score: 21, loser_score: 19 },
-      { id: 4, created_at: new Date(Date.now() - 286400000).toISOString(), is_doubles: false, winner_id1: { username: 'Somil Boora' }, loser_id1: { username: 'William Moore' }, winner_id2: null, loser_id2: null, winner_score: 21, loser_score: 9 },
-      { id: 5, created_at: new Date(Date.now() - 386400000).toISOString(), is_doubles: false, winner_id1: { username: 'Ryan Campbell' }, loser_id1: { username: 'MM' }, winner_id2: null, loser_id2: null, winner_score: 22, loser_score: 20 },
-      { id: 6, created_at: new Date(Date.now() - 486400000).toISOString(), is_doubles: true, winner_id1: { username: 'B Cran' }, winner_id2: { username: 'Ryan Campbell' }, loser_id1: { username: 'Arpy (Supreme) Mukhopadhyay' }, loser_id2: { username: 'Somil Boora' }, winner_score: 21, loser_score: 17 },
-      { id: 7, created_at: new Date(Date.now() - 586400000).toISOString(), is_doubles: false, winner_id1: { username: 'Ethan C' }, loser_id1: { username: 'Subra Narayan' }, winner_id2: null, loser_id2: null, winner_score: 21, loser_score: 11 },
-    ] as any
+  let mData: any[] = data ?? []
+  if (mData.length === 0 && import.meta.env.DEV) {
+    const { mockMatchesHistory } = await import('../../utils/testData')
+    mData = mockMatchesHistory
   }
   
   matches.value = mData

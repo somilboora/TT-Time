@@ -26,15 +26,10 @@ onMounted(async () => {
     .select('*')
     .order('username', { ascending: true })
 
-  let fakeData = data ?? []
-  if (fakeData.length === 0) {
-    fakeData = [
-      { id: '1', username: 'Ethan C' },
-      { id: '2', username: 'Joseph Zola' },
-      { id: '3', username: 'Alex Minuzzo' },
-      { id: '4', username: 'Arpy (Supreme) Mukhopadhyay' },
-      { id: '7', username: 'B Cran' },
-    ] as any
+  let fakeData: any[] = data ?? []
+  if (fakeData.length === 0 && import.meta.env.DEV) {
+    const { mockProfilesAddMatch } = await import('../../utils/testData')
+    fakeData = mockProfilesAddMatch
   }
 
   if (fakeData) profiles.value = fakeData
