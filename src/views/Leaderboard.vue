@@ -94,9 +94,6 @@ const sortedPlayers = computed(() => {
           <TableRow class="bg-muted text-foreground">
             <TableHead class="w-1/12 font-semibold whitespace-nowrap">Rank</TableHead>
             <TableHead class="w-4/12 font-semibold whitespace-nowrap">Name</TableHead>
-            <TableHead class="w-2/12 font-semibold whitespace-nowrap cursor-pointer hover:text-primary transition-colors select-none" @click="toggleSort('games_played')">
-              Games Played <span v-if="sortKey === 'games_played'">{{ sortDesc ? '↓' : '↑' }}</span>
-            </TableHead>
             <TableHead class="w-2/12 font-semibold whitespace-nowrap text-right cursor-pointer hover:text-primary transition-colors select-none" @click="toggleSort('win_percentage')">
               Win % <span v-if="sortKey === 'win_percentage'">{{ sortDesc ? '↓' : '↑' }}</span>
             </TableHead>
