@@ -117,7 +117,6 @@ const sortedPlayers = computed(() => {
               <span v-else-if="players.indexOf(player) === 2" title="Rank #3">🥉</span>
             </TableCell>
             <TableCell class="font-medium max-w-[120px] truncate" :title="player.username">{{ player.username }}</TableCell>
-            <TableCell>{{ player.games_played }}</TableCell>
             <TableCell class="text-right">{{ player.win_percentage }}</TableCell>
             <TableCell class="text-right">{{ player.win_streak }}</TableCell>
             <TableCell class="text-right font-bold">{{ player.elo_rating }}</TableCell>
